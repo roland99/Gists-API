@@ -10,22 +10,20 @@ class GistContainer extends React.Component {
         super(props);
         this.state = {
             userName: '',
-            resultGists:[]
+            resultGists:[],
+            forks:[]
         }
         this.handleSubmit = this.handleSubmit.bind(this);
     }
+
     
     handleSubmit(user) {
-        let user2 = 'anders';
-        console.log("Asta am primit");
-        console.log(user)
         return API.getPublicGists(user, (result, status, error) => {
             if (result !== null && (status === 200 || status === 201)) {
-                console.log("Successfully updated client with id: ");
-                console.log(result);
                 this.setState({
                     resultGists: result
                 });
+                //this.retrieveTheForks();
             } else {
                 this.setState(({
                     errorStatus: status,
@@ -40,10 +38,9 @@ class GistContainer extends React.Component {
                     <div style={{justifyContent: 'center'}} >
                         <SearchBar userName={this.state.userName} onUserSubmit={this.handleSubmit}></SearchBar>
                     </div>
-                    <button onClick={this.handleSubmit}>Da</button>
 
                     <div>
-                        <GistTable gists={this.state.resultGists}></GistTable>
+                        {this.state.resultGists.length > 0 && <GistTable gists={this.state.resultGists}></GistTable>}
                     </div>
 
                 </div> );
